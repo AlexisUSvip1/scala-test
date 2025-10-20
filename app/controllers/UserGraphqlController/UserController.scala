@@ -1,6 +1,6 @@
 package controllers
 
-import graphql.{ProductRepo, UserRepo}
+import graphql.{OrderRepo, ProductRepo, UserRepo}
 import graphql.User.SchemaDefinitionUser
 import play.api.libs.json.JsValue
 import play.api.mvc.{AbstractController, Action, ControllerComponents}
@@ -17,15 +17,15 @@ import sangria.marshalling.circe._
 class GraphQLControllerUsers @Inject()(cc: ControllerComponents)(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
   private val productRepo = new ProductRepo()
+  private val orderRepo = new OrderRepo()
   def graphql: Action[JsValue] = Action.async(parse.json) { request =>
     val query = (request.body \ "query").as[String]
 
-    println("Query: " + query)
-
+    println("Queddry:" )
     QueryParser.parse(query) match {
       case Success(ast) =>
-        val userRepo = new UserRepo(productRepo)
-        Executor.execute(SchemaDefinitionUser.schema, ast,userRepo)
+        val userRepo = new UserRepo(productRepo, orderRepo)
+        Executor.execute(SchemaDefinitionUser.schema, ast, userRepo)
           .map(result => Ok(play.api.libs.json.Json.parse(result.noSpaces)))
       case Failure(error) =>
         Future.successful(BadRequest(play.api.libs.json.Json.obj("error" -> error.getMessage)))

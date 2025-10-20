@@ -15,8 +15,8 @@ libraryDependencies ++= Seq(
   "org.sangria-graphql" %% "sangria-circe" % "1.3.2",
   "io.circe" %% "circe-core" % "0.14.6",
   "io.circe" %% "circe-parser" % "0.14.6",
-  
-   "org.parboiled" %% "parboiled" % "2.5.1" 
+  "org.typelevel" %% "cats-core" % "2.9.0",
+   "org.parboiled" %% "parboiled" % "2.5.1"
 )
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"

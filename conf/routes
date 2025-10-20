@@ -12,3 +12,4 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 POST    /graphql/products     controllers.GraphQLControllerProduct.graphql
 POST    /graphql/pictures     controllers.GraphQLControllerPicture.graphql
 POST    /graphql/users        controllers.GraphQLControllerUsers.graphql
+POST    /graphql/order        controllers.GraphQLControllerOrder.graphql

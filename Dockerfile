@@ -40,9 +40,11 @@ COPY --from=builder /app/target/universal/stage/ /opt/app/
 # Instalar openssl para generar el secreto seguro
 RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
-# Generar un secreto seguro automáticamente al iniciar
-# Nota: este valor se usará si no se pasa APPLICATION_SECRET desde docker run
+# Generar un secreto seguro si no se pasa como variable de entorno
+# Nota: si no se pasa APPLICATION_SECRET al contenedor, se generará uno aleatorio con openssl
 ENV APPLICATION_SECRET="changeme"
-ENTRYPOINT ["sh", "-c", "if [ \"$APPLICATION_SECRET\" = 'changeme' ]; then export APPLICATION_SECRET=$(openssl rand -base64 64); fi; /opt/app/bin/graphql-test -Dhttp.port=9000 -Dplay.http.secret.key=$APPLICATION_SECRET"]
+
+# Iniciar el contenedor, si el secreto es "changeme", generar uno aleatorio usando openssl
+ENTRYPOINT ["sh", "-c", "if [ \"$APPLICATION_SECRET\" = 'changeme' ]; then export APPLICATION_SECRET=$(openssl rand -base64 32); fi; /opt/app/bin/graphql-test -Dhttp.port=9000 -Dplay.http.secret.key=$APPLICATION_SECRET"]
 
 EXPOSE 9000

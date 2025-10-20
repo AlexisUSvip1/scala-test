@@ -1,0 +1,13 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/app  # Monta el directorio actual en el contenedor para que los cambios sean inmediatos
+    command: sbt run  # Aquí puedes ajustar el comando para tu aplicación Scala
+    environment:
+      - APPLICATION_SECRET=changeme  # Puedes pasar variables de entorno aquí
